@@ -12,14 +12,32 @@ export class TeacherTableComponent implements OnInit {
   faTrash = faTrash;
   faPlus = faPlus;
   faPenSquare = faPenSquare;
-  teacherData: any;
+  teacherData: any[] = [];
+  searchText: string = '';
   selected: any;
 
-  constructor(private service: AppServiceService, private router: Router) { }
+  constructor(private appservice: AppServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getTeacherData();
+    this.fetchTeacherData();
   }
+
+  fetchTeacherData() {
+    this.AppService.getTeacherData().subscribe((data: any[]) => {
+      this.teacherData = data;
+    });
+  }
+
+  search() {
+    if (this.searchText) {
+      const searchValue = this.searchText.toLowerCase();
+      const filteredTeacherData = this.teacherData.filter(teacher => teacher.name.toLowerCase().includes(searchValue));
+      this.teacherData = filteredTeacherData;
+    } else {
+      this.fetchTeacherData(); // Reset to original data when search text is empty
+    }
+  }
+}
 
   addNewTeacher() {
     this.router.navigate(['addTeacher'])

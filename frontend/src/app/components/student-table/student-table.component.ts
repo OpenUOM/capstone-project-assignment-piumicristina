@@ -15,12 +15,28 @@ export class StudentTableComponent implements OnInit {
   studentData: any;
   selected: any;
 
-  constructor(private service : AppServiceService, private router: Router) { }
+  constructor(private appservice : AppServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getStudentData();
+    this.fetchStudentData();
   }
 
+  fetchStudentData() {
+    this.appService.getStudentData().subscribe((data: any[]) => {
+      this.studentData = data;
+    });
+  }
+
+  search() {
+    if (this.searchText) {
+      const searchValue = this.searchText.toLowerCase();
+      const filteredStudentData = this.studentData.filter(student => student.name.toLowerCase().includes(searchValue));
+      this.studentData = filteredStudentData;
+    } else {
+      this.fetchStudentData(); // Reset to original data when search text is empty
+    }
+  }
+}
   addNewStudent(){
     this.router.navigate(['addStudent'])
   }
