@@ -11,7 +11,7 @@ const {
   readTeacherInfo,
   updateStudent,
   updateTeacher,
-  dbinitialize
+  initializeDatabase,
 } = require ("./database.js");
 
 const app = express();
@@ -79,6 +79,14 @@ app.post("/deleteTeacher", async function (req, res) {
 });
 
 // ============== Student Related endpoints ==============
+
+app.get("/listStudents", async function (req, res) {
+  console.log("Request received to list students");
+  let data = await readStudents();
+
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(data));
+});
 
 app.get("/listStudents", async function (req, res) {
   console.log("Request received to list students");

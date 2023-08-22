@@ -37,47 +37,47 @@ export class StudentTableComponent implements OnInit {
     }
   }
 }
-  addNewStudent(){
-    this.router.navigate(['addStudent'])
-  }
+addNewStudent(){
+  this.router.navigate(['addStudent'])
+}
 
-  editStudent(id){
-    const navigationExtras: NavigationExtras = {
-      state: {
-        id : id
+editStudent(id){
+  const navigationExtras: NavigationExtras = {
+    state: {
+      id : id
+    }
+  };
+  this.router.navigate(['editStudent'], navigationExtras )
+}
+
+getStudentData(){
+  this.service.getStudentData().subscribe((response)=>{
+    this.studentData = Object.keys(response).map((key) => [response[key]]);
+  },(error)=>{
+    console.log('ERROR - ', error)
+  })
+}
+
+deleteStudent(itemid){
+  const student = {
+    id: itemid
+  }
+  this.service.deleteStudent(student).subscribe((response)=>{
+    this.getStudentData()
+  })
+}
+
+search(value) {
+  let foundItems = [];
+  if (value.length <= 0) {
+    this.getStudentData();
+  } else {
+    let b = this.studentData.filter((student) => {
+      if (student[0].name.toLowerCase().indexOf(value) > -1) {
+        foundItems.push(student)
       }
-    };
-    this.router.navigate(['editStudent'], navigationExtras )
+    });
+    this.studentData = foundItems;
   }
-
-  getStudentData(){
-    this.service.getStudentData().subscribe((response)=>{
-      this.studentData = Object.keys(response).map((key) => [response[key]]);
-    },(error)=>{
-      console.log('ERROR - ', error)
-    })
-  }
-
-  deleteStudent(itemid){
-    const student = {
-      id: itemid
-    }
-    this.service.deleteStudent(student).subscribe((response)=>{
-      this.getStudentData()
-    })
-  }
-
-  search(value) {
-    let foundItems = [];
-    if (value.length <= 0) {
-      this.getStudentData();
-    } else {
-      let b = this.studentData.filter((student) => {
-        if (student[0].name.toLowerCase().indexOf(value) > -1) {
-          foundItems.push(student)
-        }
-      });
-      this.studentData = foundItems;
-    }
-  }
+}
 }
