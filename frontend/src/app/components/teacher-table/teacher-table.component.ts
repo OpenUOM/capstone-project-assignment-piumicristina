@@ -8,7 +8,11 @@ import { AppServiceService } from '../../app-service.service';
   styleUrls: ['./teacher-table.component.css']
 })
 
+// ... (existing imports)
+
 export class TeacherTableComponent implements OnInit {
+
+  // ... (existing properties and methods)
 
   faTrash = faTrash;
   faPlus = faPlus;
@@ -53,10 +57,6 @@ export class TeacherTableComponent implements OnInit {
     })
   }
 
-  search(value) {
-
-  }
-
   deleteTeacher(itemid) {
     const test = {
       id: itemid
@@ -66,3 +66,22 @@ export class TeacherTableComponent implements OnInit {
     })
   }
 }
+
+  search(value: string) {
+    if (!value.trim()) {
+      this.getTeacherData(); // If search query is empty, reset to all teachers
+      return;
+    }
+
+    value = value.toLowerCase(); // Convert search query to lowercase for case-insensitive search
+
+    this.service.getTeacherData().subscribe((response) => {
+      this.teacherData = Object.keys(response)
+          .map((key) => response[key])
+          .filter((teacher) => teacher.name.toLowerCase().includes(value)); // Filter teachers by name
+    }, (error) => {
+      console.log('ERROR - ', error)
+    });
+  }
+}
+

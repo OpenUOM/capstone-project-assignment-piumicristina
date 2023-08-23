@@ -3,6 +3,8 @@
   <div class="add-btn-elements-container">
     <input id="teacher-search" style="height: 20px;" #box (keyup)="search(box.value)" placeholder="Search">
     <button style="width: 120px; height: 43px; font-size: 14px;" (click)="addNewTeacher()" class="btn">Add New &nbsp;<fa-icon [icon]="faPlus"></fa-icon></button>
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name" />
+    <button (click)="search(searchQuery)">Search</button>
   </div>
 </div>
 <div class="table-container">
