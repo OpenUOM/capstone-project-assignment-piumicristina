@@ -7,97 +7,62 @@ import { AppServiceService } from '../../app-service.service';
   templateUrl: './teacher-table.component.html',
   styleUrls: ['./teacher-table.component.css']
 })
+
 export class TeacherTableComponent implements OnInit {
 
   faTrash = faTrash;
   faPlus = faPlus;
   faPenSquare = faPenSquare;
-  teacherData: any[] = [];
-  searchText: string = '';
+  teacherData: any;
   selected: any;
 
-  constructor(private appservice: AppServiceService, private router: Router) { }
+  constructor(private service: AppServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.fetchTeacherData();
-  }
-
-  fetchTeacherData() {
-    this.AppService.getTeacherData().subscribe((data: any[]) => {
-      this.teacherData = data;
-    });
-  }
-
-  search() {
-    if (this.searchText) {
-      const searchValue = this.searchText.toLowerCase();
-      const filteredTeacherData = this.teacherData.filter(teacher => teacher.name.toLowerCase().includes(searchValue));
-      this.teacherData = filteredTeacherData;
-    } else {
-      this.fetchTeacherData(); // Reset to original data when search text is empty
-    }
-  }
-}
-
-addNewTeacher() {
-  this.router.navigate(['addTeacher'])
-}
-
-editTeacher(id) {
-  const navigationExtras: NavigationExtras = {
-    state: {
-      id: id
-    }
-  };
-  this.router.navigate(['editTeacher'], navigationExtras)
-}
-
-initializeDB(){
-  this.service.initializeDB().subscribe((response) => {
-    console.log('DB is Initialized')
-  }, (error) => {
-    console.log('ERROR - ', error)
-  })
-}
-
-getTeacherData() {
-  this.selected = 'Teachers';
-  this.service.getTeacherData().subscribe((response) => {
-    this.teacherData = Object.keys(response).map((key) => [response[key]]);
-  }, (error) => {
-    console.log('ERROR - ', error)
-  })
-}
-
-getStudentData() {
-  this.selected = 'Students';
-  this.service.getStudentData().subscribe((response) => {
-    this.teacherData = response;
-  }, (error) => {
-    console.log('ERROR - ', error)
-  })
-}
-
-search(value) {
-  let foundItems = [];
-  if (value.length <= 0) {
     this.getTeacherData();
-  } else {
-    let b = this.teacherData.filter((teacher) => {
-      if (teacher[0].name.toLowerCase().indexOf(value) > -1) {
-        foundItems.push(teacher)
-      }
-    });
-    this.teacherData = foundItems;
   }
-}
 
-deleteTeacher(itemid) {
-  const test = {
-    id: itemid
+  addNewTeacher() {
+    this.router.navigate(['addTeacher'])
   }
-  this.service.deleteTeacher(test).subscribe((response) => {
-    this.getTeacherData()
-  })
-}
+
+  editTeacher(id) {
+    const navigationExtras: NavigationExtras = {
+      state: {
+        id: id
+      }
+    };
+    this.router.navigate(['editTeacher'], navigationExtras)
+  }
+
+  getTeacherData() {
+    this.selected = 'Teachers';
+    this.service.getTeacherData().subscribe((response) => {
+      this.teacherData = Object.keys(response).map((key) => [response[key]]);
+    }, (error) => {
+      console.log('ERROR - ', error)
+    })
+  }
+
+  getStudentData() {
+    this.selected = 'Students';
+    this.service.getStudentData().subscribe((response) => {
+      this.teacherData = response;
+    }, (error) => {
+      console.log('ERROR - ', error)
+    })
+  }
+
+  search(value) {
+
+  }
+
+  deleteTeacher(itemid) {
+    const test = {
+      id: itemid
+    }
+    this.service.deleteTeacher(test).subscribe((response) => {
+      this.getTeacherData()
+    })
+  }
 }
