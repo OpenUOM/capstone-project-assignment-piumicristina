@@ -11,7 +11,7 @@ const {
   readTeacherInfo,
   updateStudent,
   updateTeacher,
-  initializeDatabase,
+  dbinitialize,
 } = require ("./database.js");
 
 const app = express();

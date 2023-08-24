@@ -1,33 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { faTrash, faPlus, faPenSquare } from '@fortawesome/free-solid-svg-icons';
-import { AppServiceService } from '../../app-service.service'; // Assuming this is your service for fetching data
-// @ts-ignore
-import { TeacherService } from 'path-to-teacher-service'; // Update with actual path
+import { AppServiceService } from '../../app-service.service';
 
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
 @Component({
   selector: 'app-teacher-table',
   templateUrl: './teacher-table.component.html',
   styleUrls: ['./teacher-table.component.css']
 })
+
 export class TeacherTableComponent implements OnInit {
 
   faTrash = faTrash;
   faPlus = faPlus;
   faPenSquare = faPenSquare;
-  teacherData: any[];
-  selected: string;
-  searchText: string;
+  teacherData: any;
+  selected: any;
 
-  // @ts-ignore
-  constructor(private service: AppServiceService, private router: Router, private teacherService: TeacherService)
-  // Add the teacherService dependency { }
+  constructor(private service: AppServiceService, private router: Router) { }
 
   ngOnInit(): void {
     this.getTeacherData();
@@ -37,7 +27,7 @@ export class TeacherTableComponent implements OnInit {
     this.router.navigate(['addTeacher'])
   }
 
-  editTeacher(id: any) {
+  editTeacher(id) {
     const navigationExtras: NavigationExtras = {
       state: {
         id: id
@@ -58,35 +48,22 @@ export class TeacherTableComponent implements OnInit {
   getStudentData() {
     this.selected = 'Students';
     this.service.getStudentData().subscribe((response) => {
-      // @ts-ignore
-      this.teacherData = response; // Assuming response is an array of students
+      this.teacherData = response;
     }, (error) => {
       console.log('ERROR - ', error)
     })
   }
 
-  search() {
-    if (!this.searchText) {
-      this.getTeacherData(); // Reset data if search text is empty
-      return;
-    }
+  search(searchText: string) {
 
-    // Filter teacherData based on searchText
-    const filteredTeachers = this.teacherData.filter(teacher =>
-    teacher.name.toLowerCase().includes(this.searchText.toLowerCase())
-    );
-
-    //updated teacherData with filtered teachers
-    this.teacherService.updateteacherData(filteredTeachers);
-    }
-
-  deleteTeacher(itemid: any) {
-    const test = {
-      id: itemid
-    }
-    this.service.deleteTeacher(test).subscribe((response) => {
-      this.getTeacherData()
-    });
-  }
 }
 
+deleteTeacher(itemid) {
+  const test = {
+    id: itemid
+  }
+  this.service.deleteTeacher(test).subscribe((response) => {
+    this.getTeacherData()
+  })
+}
+}
