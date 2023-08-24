@@ -1,26 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { faTrash, faPlus, faPenSquare } from '@fortawesome/free-solid-svg-icons';
-import { AppServiceService } from '../../app-service.service';
+import { AppServiceService } from '../../app-service.service'; // Assuming this is your service for fetching data
+// @ts-ignore
+import { TeacherService } from 'path-to-teacher-service'; // Update with actual path
+
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
 @Component({
   selector: 'app-teacher-table',
   templateUrl: './teacher-table.component.html',
   styleUrls: ['./teacher-table.component.css']
 })
-
-// ... (existing imports)
-
 export class TeacherTableComponent implements OnInit {
-
-  // ... (existing properties and methods)
 
   faTrash = faTrash;
   faPlus = faPlus;
   faPenSquare = faPenSquare;
-  teacherData: any;
-  selected: any;
+  teacherData: any[];
+  selected: string;
+  searchText: string;
 
-  constructor(private service: AppServiceService, private router: Router) { }
+  // @ts-ignore
+  constructor(private service: AppServiceService, private router: Router, private teacherService: TeacherService)
+  // Add the teacherService dependency { }
 
   ngOnInit(): void {
     this.getTeacherData();
@@ -30,7 +37,7 @@ export class TeacherTableComponent implements OnInit {
     this.router.navigate(['addTeacher'])
   }
 
-  editTeacher(id) {
+  editTeacher(id: any) {
     const navigationExtras: NavigationExtras = {
       state: {
         id: id
@@ -51,36 +58,34 @@ export class TeacherTableComponent implements OnInit {
   getStudentData() {
     this.selected = 'Students';
     this.service.getStudentData().subscribe((response) => {
-      this.teacherData = response;
+      // @ts-ignore
+      this.teacherData = response; // Assuming response is an array of students
     }, (error) => {
       console.log('ERROR - ', error)
     })
   }
 
-  deleteTeacher(itemid) {
+  search() {
+    if (!this.searchText) {
+      this.getTeacherData(); // Reset data if search text is empty
+      return;
+    }
+
+    // Filter teacherData based on searchText
+    const filteredTeachers = this.teacherData.filter(teacher =>
+    teacher.name.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+
+    //updated teacherData with filtered teachers
+    this.teacherService.updateteacherData(filteredTeachers);
+    }
+
+  deleteTeacher(itemid: any) {
     const test = {
       id: itemid
     }
     this.service.deleteTeacher(test).subscribe((response) => {
       this.getTeacherData()
-    })
-  }
-}
-
-  search(value: string) {
-    if (!value.trim()) {
-      this.getTeacherData(); // If search query is empty, reset to all teachers
-      return;
-    }
-
-    value = value.toLowerCase(); // Convert search query to lowercase for case-insensitive search
-
-    this.service.getTeacherData().subscribe((response) => {
-      this.teacherData = Object.keys(response)
-          .map((key) => response[key])
-          .filter((teacher) => teacher.name.toLowerCase().includes(value)); // Filter teachers by name
-    }, (error) => {
-      console.log('ERROR - ', error)
     });
   }
 }
