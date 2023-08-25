@@ -1,4 +1,5 @@
 const dbConnection = require("./sqlite");
+const express = require ("express");
 
 dbConnection
   .getDbConnection()
@@ -159,6 +160,18 @@ const deleteStudent = async (id) => {
     });
 }
 
+const {
+} = require ("./database.js");
+
+// Define dbinitialize function
+function dbinitialize() {
+    // Initialization logic
+}
+
+// Export the necessary functions
+
+
+
 module.exports = {
     readTeachers,
     readStudents,
@@ -169,5 +182,6 @@ module.exports = {
     readStudentInfo,
     readTeacherInfo,
     updateStudent,
-    updateTeacher
+    updateTeacher,
+    dbinitialize // Export dbinitialize here
 };
