@@ -1,5 +1,4 @@
 const dbConnection = require("./sqlite");
-const express = require ("express");
 
 dbConnection
   .getDbConnection()
