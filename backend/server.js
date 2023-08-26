@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Initialize the database
-dbinitialize();
+dbinitialize()
 
 app.get("/dbinitialize", async function (req, res) {
   console.log("DB is getting initialized");

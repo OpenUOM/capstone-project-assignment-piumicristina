@@ -17,9 +17,10 @@ function init(db) {
 }
 
 const knex_db = require("./db-config");
+const {resetDatabase} = require("./test/testBase");
 
 const dbinitialize = async () => {
-    testBase.resetDatabase(knex_db);
+    await resetDatabase(knex_db);
 }
 
 const readTeachers = async () => {
