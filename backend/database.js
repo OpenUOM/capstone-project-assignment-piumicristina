@@ -18,10 +18,6 @@ function init(db) {
 
 const knex_db = require("./db-config");
 
-const dbinitialize = async () => {
-    testBase.resetDatabase(knex_db);
-}
-
 const readTeachers = async () => {
     const sql = `SELECT * FROM teacher`
     return new Promise((resolve, reject) => {
@@ -138,7 +134,7 @@ const updateStudent = async (name, age, hometown, id) => {
     const sql = `UPDATE student SET name=?, age=?, hometown=? WHERE id=?`
     return new Promise((resolve, reject) => {
         knex_db
-            .raw(sqll, [name, age, hometown, id])
+            .raw(sql, [name, age, hometown, id])
             .then(() => {
                 resolve({status: "Successfully updated Student"});
             })
