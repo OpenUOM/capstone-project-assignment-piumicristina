@@ -21,6 +21,7 @@ const knex_db = require("./db-config");
 const dbinitialize = async () => {
     testBase.resetDatabase(knex_db);
 }
+
 const readTeachers = async () => {
     const sql = `SELECT * FROM teacher` // Assuming the teacher table name is "teacher"
     return new Promise((resolve, reject) => {
@@ -134,12 +135,12 @@ const addStudent = async (id, name, age, hometown) => {
 }
 
 const updateStudent = async (name, age, hometown, id) => {
-    const sql = `UPDATE student SET name=?, age=?, hometown=? WHERE id=?`
+    const sql = `UPDATE student SET name=?, age=?, hometown=? WHERE id=?`//`SELECT * FROM dummyData`
     return new Promise((resolve, reject) => {
         knex_db
             .raw(sql, [name, age, hometown, id])
-            .then(() => {
-                resolve({status: "Successfully updated Student"});
+            .then((/*data*/) => {
+                resolve({status: "Successfully updated Student"}/*data*/);
             })
             .catch((error) => {
                 reject(error);
