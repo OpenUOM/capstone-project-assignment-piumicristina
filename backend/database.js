@@ -18,13 +18,16 @@ function init(db) {
 
 const knex_db = require("./db-config");
 
+const dbinitialize = async () => {
+    testBase.resetDatabase(knex_db);
+}
 const readTeachers = async () => {
-    const sql = `SELECT * FROM teacher`
+    const sql = `SELECT * FROM teacher` // Assuming the teacher table name is "teacher"
     return new Promise((resolve, reject) => {
         knex_db
             .raw(sql)
             .then((teachers) => {
-                resolve(teachers);
+                resolve(teachers); // Assuming the query returns an array of rows
             })
             .catch((error) => {
                 reject(error);
@@ -89,12 +92,12 @@ const deleteTeacher = async (id) => {
 }
 
 const readStudents = async () => {
-    const sql = `SELECT * FROM student`
+    const sql = `SELECT * FROM student` // Assuming the student table name is "student"
     return new Promise((resolve, reject) => {
         knex_db
             .raw(sql)
             .then((students) => {
-                resolve(students);
+                resolve(students); // Assuming the query returns an array of rows
             })
             .catch((error) => {
                 reject(error);
